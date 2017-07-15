@@ -1,0 +1,2 @@
+class GameInterface
+end
