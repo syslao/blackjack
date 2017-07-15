@@ -18,4 +18,8 @@ class CardDeck
     end
     @deck.shuffle!
   end
+
+  def remove_card
+    @deck.pop
+  end
 end

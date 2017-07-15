@@ -6,4 +6,8 @@ class Player
     @cards = {}
     @account = Bank.new(100)
   end
+
+  def take_card(card)
+    cards[card[0]] = card[1]
+  end
 end

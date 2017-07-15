@@ -10,6 +10,7 @@ class GameInterface
   def start
     make_bet
     user_actions
+    make_action(@user_choice)
   end
 
   def user_actions
@@ -17,7 +18,17 @@ class GameInterface
     @user_choice = gets.to_i
   end
 
-  def execute_action
+  def make_action(action)
+    case action
+    when 1
+    when 2
+    when 3
+    when 0
+      puts 'До встречи'
+      exit
+    else
+      puts 'Неизвестная команда!'
+    end
   end
 
   def make_bet(value = 10)
