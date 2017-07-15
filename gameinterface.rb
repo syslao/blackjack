@@ -21,7 +21,10 @@ class GameInterface
   def make_action(action)
     case action
     when 1
+      dealer_turn
     when 2
+      @user.take_card(@deck.remove_card)
+      dealer_turn
     when 3
     when 0
       puts 'До встречи'
@@ -33,6 +36,10 @@ class GameInterface
 
   def make_bet(value = 10)
     [@user.account, @dealer.account].each { |player| player.transfer(@bank, value) }
+  end
+
+  def dealer_turn
+    @dealer.take_card(@deck.remove_card)
   end
 
   def create_user
