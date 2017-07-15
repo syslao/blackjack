@@ -9,8 +9,11 @@ class GameInterface
 
   def start
     make_bet
-    user_actions
-    make_action(@user_choice)
+    until @user.cards.count > 2
+      user_actions
+      make_action(@user_choice)
+    end
+    open_cards
   end
 
   def user_actions
@@ -26,6 +29,7 @@ class GameInterface
       @user.take_card(@deck.remove_card)
       dealer_turn
     when 3
+      open_cards
     when 0
       puts 'До встречи'
       exit
@@ -40,6 +44,11 @@ class GameInterface
 
   def dealer_turn
     @dealer.take_card(@deck.remove_card)
+  end
+
+  def open_cards
+    @dealer.show_cards
+    @user.show_cards
   end
 
   def create_user
