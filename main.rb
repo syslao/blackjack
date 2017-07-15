@@ -7,7 +7,6 @@ require_relative 'user'
 require_relative 'dealer'
 require_relative 'bank'
 
-
 interface = GameInterface.new
 
 loop do
