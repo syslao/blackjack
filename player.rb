@@ -17,6 +17,13 @@ class Player
   end
 
   def score
-    cards.values.inject(:+)
+    result = cards.values.inject(:+)
+    cards.each do |card|
+      if card[1] == 1
+        temp_res = result + 10
+        result = temp_res < 22 ? temp_res : result
+      end
+    end
+    result <= 21 ? result : 0
   end
 end
