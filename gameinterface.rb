@@ -1,5 +1,18 @@
 class GameInterface
   def initialize
+    setup
+  end
+
+  def start
+    first_turn
+    until @user.cards.count > 2
+      user_actions
+      make_action(@user_choice)
+    end
+    open_cards
+  end
+
+  def setup
     @bank   = Bank.new(0)
     @deck   = CardDeck.new
     @dealer = Dealer.new
@@ -7,13 +20,16 @@ class GameInterface
     @actions = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '0-Выход']
   end
 
-  def start
+  def reset
+    setup
+    start
+  end
+
+  def first_turn
     make_bet
-    until @user.cards.count > 2
-      user_actions
-      make_action(@user_choice)
+    2.times do
+      [@user, @dealer].each { |player| player.take_card(@deck.remove_card) }
     end
-    open_cards
   end
 
   def user_actions
@@ -42,6 +58,16 @@ class GameInterface
     [@user.account, @dealer.account].each { |player| player.transfer(@bank, value) }
   end
 
+  def dealer_turn
+    @dealer.take_card(@deck.remove_card)
+  end
+
+  def open_cards
+    @dealer.show_cards
+    @user.show_cards
+    winner
+  end
+
   def winner
     winner =
     if @user.score > @dealer.score
@@ -54,15 +80,7 @@ class GameInterface
 
   def show_winner(winner)
     puts "Выиграл - #{winner.name}!"
-  end
-
-  def dealer_turn
-    @dealer.take_card(@deck.remove_card)
-  end
-
-  def open_cards
-    @dealer.show_cards
-    @user.show_cards
+    reset
   end
 
   def create_user
