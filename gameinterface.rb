@@ -35,6 +35,7 @@ class GameInterface
   def user_actions
     @actions.each { |action| puts "#{action} " }
     @user_choice = gets.to_i
+    @actions.delete_at(@user_choice - 1)
   end
 
   def make_action(action)
