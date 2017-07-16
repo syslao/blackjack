@@ -42,6 +42,20 @@ class GameInterface
     [@user.account, @dealer.account].each { |player| player.transfer(@bank, value) }
   end
 
+  def winner
+    winner =
+    if @user.score > @dealer.score
+      @user
+    elsif @user.score < @dealer.score
+      @dealer
+    end
+    winner ? show_winner(winner) : puts('Ничья')
+  end
+
+  def show_winner(winner)
+    puts "Выиграл - #{winner.name}!"
+  end
+
   def dealer_turn
     @dealer.take_card(@deck.remove_card)
   end
