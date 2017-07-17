@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 class GameInterface
+  LINE = "\n---------\n"
+
   def initialize
     setup
   end
@@ -8,7 +10,9 @@ class GameInterface
   def start
     first_turn
     until @user.cards.count > 2
+      clear_screen
       players_info
+      players_cards
       user_actions
       make_action(@user_choice)
     end
@@ -67,7 +71,9 @@ class GameInterface
   end
 
   def open_cards
+    clear_screen
     @dealer.show_cards
+    print LINE
     @user.show_cards
     winner
   end
@@ -91,6 +97,16 @@ class GameInterface
     print "#{@user.name}: #{@user.account.sum}$. ",
           "Dealer: #{@dealer.account.sum}$. ",
           "Bank #{@bank.sum}$.\n"
+  end
+
+  def players_cards
+    @dealer.show_cards_back
+    print LINE
+    @user.show_cards
+  end
+
+  def clear_screen
+    system 'clear'
   end
 
   def create_user
