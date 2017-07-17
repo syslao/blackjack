@@ -87,12 +87,12 @@ class GameInterface
     elsif @user.score < @dealer.score
       @dealer
     end
-    winner ? show_winner(winner) : puts('Ничья')
+    winner ? pay_winner(winner) : puts('Ничья')
   end
 
-  def show_winner(winner)
+  def pay_winner(winner)
     puts "Выиграл - #{winner.name}!"
-    reset
+    @bank.transfer(winner.account, @bank.sum)
   end
 
   def players_info
