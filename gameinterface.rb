@@ -67,7 +67,9 @@ class GameInterface
   end
 
   def dealer_turn
-    @dealer.take_card(@deck.remove_card)
+    until @dealer.cards.count > 2
+      @dealer.take_card(@deck.remove_card) if @dealer.score < 19
+    end    
   end
 
   def open_cards
