@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class GameInterface
   def initialize
     setup
@@ -6,6 +8,7 @@ class GameInterface
   def start
     first_turn
     until @user.cards.count > 2
+      players_info
       user_actions
       make_action(@user_choice)
     end
@@ -82,6 +85,12 @@ class GameInterface
   def show_winner(winner)
     puts "Выиграл - #{winner.name}!"
     reset
+  end
+
+  def players_info
+    print "#{@user.name}: #{@user.account.sum}$. ",
+          "Dealer: #{@dealer.account.sum}$. ",
+          "Bank #{@bank.sum}$.\n"
   end
 
   def create_user
