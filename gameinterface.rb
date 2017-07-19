@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class GameInterface
-  LINE = "\n---------\n"
+  LINE = "\n---------------\n"
 
   def initialize
     setup
@@ -27,7 +27,15 @@ class GameInterface
     @actions = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '0-Выход']
   end
 
+  def new_round_init
+    @deck   = CardDeck.new
+    @actions = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '4-Начать заново', '0-Выход']
+    [@user.cards, @dealer.cards].each(&:clear)
+    start
+  end
+
   def reset
+    exit
     setup
     start
   end
@@ -67,9 +75,7 @@ class GameInterface
   end
 
   def dealer_turn
-    until @dealer.cards.count > 2
-      @dealer.take_card(@deck.remove_card) if @dealer.score < 19
-    end    
+    @dealer.take_card(@deck.remove_card) if @dealer.cards.count < 3 && @dealer.score < 19
   end
 
   def open_cards
@@ -87,24 +93,33 @@ class GameInterface
     elsif @user.score < @dealer.score
       @dealer
     end
-    winner ? pay_winner(winner) : puts('Ничья')
+    winner ? pay_winner(winner) : draw
   end
 
   def pay_winner(winner)
     puts "Выиграл - #{winner.name}!"
     @bank.transfer(winner.account, @bank.sum)
+    gets
+    new_round_init
+  end
+
+   def draw
+    puts "Ничья!"
+    gets
+    new_round_init    
   end
 
   def players_info
     print "#{@user.name}: #{@user.account.sum}$. ",
           "Dealer: #{@dealer.account.sum}$. ",
-          "Bank #{@bank.sum}$.\n"
+          "Bank #{@bank.sum}$.\n\n"
   end
 
   def players_cards
     @dealer.show_cards_back
     print LINE
     @user.show_cards
+    puts "\n"
   end
 
   def clear_screen
