@@ -1,7 +1,8 @@
 # encoding: utf-8
 
 class GameInterface
-  LINE = "\n---------------\n"
+  LINE = "\n---------------\n".freeze
+  USER_ACTIONS = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '4-Начать заново', '0-Выход'].freeze
 
   def initialize
     setup
@@ -19,17 +20,19 @@ class GameInterface
     open_cards
   end
 
+  private
+
   def setup
     @bank   = Bank.new(0)
     @deck   = CardDeck.new
     @dealer = Dealer.new
     @user   = create_user
-    @actions = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '0-Выход']
+    @actions = USER_ACTIONS.dup
   end
 
   def new_round_init
-    @deck   = CardDeck.new
-    @actions = ['1-Пропустить ход', '2-Взять карту', '3-Открыть карты', '4-Начать заново', '0-Выход']
+    @deck = CardDeck.new
+    @actions = USER_ACTIONS.dup
     [@user.cards, @dealer.cards].each(&:clear)
     start
   end
@@ -88,11 +91,11 @@ class GameInterface
 
   def winner
     winner =
-    if @user.score > @dealer.score
-      @user
-    elsif @user.score < @dealer.score
-      @dealer
-    end
+      if @user.score > @dealer.score
+        @user
+      elsif @user.score < @dealer.score
+        @dealer
+      end
     winner ? pay_winner(winner) : draw
   end
 
@@ -103,10 +106,10 @@ class GameInterface
     new_round_init
   end
 
-   def draw
-    puts "Ничья!"
+  def draw
+    puts 'Ничья!'
     gets
-    new_round_init    
+    new_round_init
   end
 
   def players_info
